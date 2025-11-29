@@ -96,6 +96,24 @@ app.get("/api/search", (req, res) => {
 // Start Backend Server
 // ------------------------------
 const PORT = process.env.PORT || 3000;
+app.get("/nearby", (req, res) => {
+  const { lat, long, part } = req.query;
+
+  if (!lat || !long || !part) {
+    return res.status(400).json({ error: "Missing required parameters" });
+  }
+
+  const SHOPS = [
+    { id: 1, name: "TVS Service Center", lat: 10.8760, long: 78.6920, parts: ["brake pad", "clutch plate"] },
+    { id: 2, name: "Hero Spare Shop", lat: 10.8780, long: 78.6950, parts: ["brake pad", "engine oil"] }
+  ];
+
+  const results = SHOPS.filter((shop) =>
+    shop.parts.map((p) => p.toLowerCase()).includes(part.toLowerCase())
+  );
+
+  res.json({ shops: results });
+});
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
