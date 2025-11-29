@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const shops = require("./data/shops.json");
+const SHOPS = [
+  { id: 1, name: "TVS Service Center", lat: 10.8760, long: 78.6920, parts: ["brake pad", "clutch plate"] },
+  { id: 2, name: "Hero Spare Shop", lat: 10.8780, long: 78.6950, parts: ["brake pad", "engine oil"] }
+];
+
 
 const app = express();
 app.use(express.json());
