@@ -68,17 +68,22 @@ app.get("/api/search", (req, res) => {
     }
 
     const results = SHOPS
-        .filter(shop => shop.parts.map(p => p.toLowerCase()).includes(item))
-        .map(shop => {
-            const distance = calculateDistance(userLat, userLong, shop.lat, shop.long).toFixed(2);
+  .filter(shop =>
+    shop.parts.some(part =>
+      part.toLowerCase().includes(item) || item.includes(part.toLowerCase().split(" ")[0])
+    )
+  )
+  .map(shop => {
+    const distance = calculateDistance(userLat, userLong, shop.lat, shop.long).toFixed(2);
 
-            return {
-                name: shop.name,
-                partsAvailable: shop.parts,
-                distanceKm: distance,
-                googleMapLink: `https://www.google.com/maps?q=${shop.lat},${shop.long}`
-            };
-        });
+    return {
+      name: shop.name,
+      partsAvailable: shop.parts,
+      distanceKm: distance,
+      googleMapLink: `https://www.google.com/maps?q=${shop.lat},${shop.long}`
+    };
+  });
+
 
     res.json({
         query: item,
